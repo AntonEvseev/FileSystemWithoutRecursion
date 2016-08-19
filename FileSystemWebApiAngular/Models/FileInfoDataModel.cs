@@ -27,9 +27,16 @@ namespace FileSystemWebApiAngular.Models
             List<FileInfoData> li = new List<FileInfoData>();
             string sDir = id;
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(sDir));
-            foreach (var dir in dirs)
+            if (dirs.Count > 0)
             {
-                li.Add(new FileInfoData { Puth = sDir + @"\", DirectoryName = dir.Substring(dir.LastIndexOf("\\") + 1), BackStap = ".." });
+                foreach (var dir in dirs)
+                {
+                    li.Add(new FileInfoData { Puth = sDir + @"\", DirectoryName = dir.Substring(dir.LastIndexOf("\\") + 1), BackStap = ".." });
+                }
+            }
+            else
+            {
+                li.Add(new FileInfoData { Puth = sDir + @"\", BackStap = ".." });
             }
             DirectoryInfo directory = new DirectoryInfo(id);
             try
@@ -83,7 +90,7 @@ namespace FileSystemWebApiAngular.Models
                 {
                     li.Add(new FileInfoData { Puth = sDir + @"\", DirectoryName = dir.Substring(dir.LastIndexOf("\\") + 1), BackStap = ".." });
                 }
-                DirectoryInfo directory = new DirectoryInfo(id);
+                DirectoryInfo directory = new DirectoryInfo(sDir);
                 try
                 {
                     foreach (FileInfo file in directory.GetFiles())
